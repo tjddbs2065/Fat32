@@ -9,8 +9,16 @@ namespace FileSystem.Utils
     internal class DataStream
     {
         private FileStream _stream;
-        private string _fileName;
+        private string _filePath;
         private int _offset;
+
+        public DataStream(string path)
+        {
+            _filePath = path;
+            _stream = File.OpenRead(_filePath);
+        }
+
+        ~DataStream() { _stream.Close(); }
 
         public byte[] GetBytes(int length)
         {

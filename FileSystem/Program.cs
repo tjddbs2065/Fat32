@@ -17,6 +17,9 @@ namespace FileSystem
 
             string filePath = @"C:\\Users\\tjddb\\Downloads\\fat32.vhd";
 
+            DataStore dataStore = new DataStore(filePath);
+            dataStore.BuildFileSystem();
+
             Log.CloseAndFlush();
         }
     }
