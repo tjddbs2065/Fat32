@@ -8,9 +8,30 @@ namespace FileSystem.Utils
 {
     internal class Util
     {
-        public static int ByteToInt(byte[] bytes)
+        public const int SECTOR = 512;
+        public static uint ByteToUInt(byte[] bytes)
         {
-            return BitConverter.ToInt32(bytes, 0);
+            if (bytes == null || bytes.Length == 0) 
+                throw new ArgumentNullException("배열이 null이거나 비어있습니다.");
+
+            if (bytes.Length == 1)
+            {
+                return bytes[0];
+            }
+            else if (bytes.Length == 2) return BitConverter.ToUInt16(bytes, 0);
+            else if(bytes.Length >= 4) return BitConverter.ToUInt32(bytes, 0);
+            else // 3바이트인 경우 4바이트로 확장 후 처리
+            {
+                byte[] padd = new byte[4];
+                Array.Copy(bytes, padd, bytes.Length);
+                return BitConverter.ToUInt32(padd, 0);
+            }
+        }
+        public static byte[] CropBytes(byte[] bytes, int source, int size)
+        {
+            byte[] tmp = new byte[size];
+            Array.Copy(bytes, source, tmp, 0, size);
+            return tmp;
         }
     }
 }
