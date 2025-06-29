@@ -20,14 +20,14 @@ namespace FileSystem.Utils
 
         ~DataStream() { _stream.Close(); }
 
-        public byte[] GetBytes(int length)
+        public byte[] GetBytes(uint length)
         {
             byte[] bytes = new byte[length];
             _stream.Read(bytes, 0, bytes.Length);
 
             return bytes;
         }
-        public byte[] GetBytes(int offset, int length)
+        public byte[] GetBytes(uint offset, int length)
         {
             byte[] bytes = new byte[length];
             SetOffset(offset);
@@ -35,7 +35,7 @@ namespace FileSystem.Utils
 
             return bytes;
         }
-        public void SetOffset(int offset)
+        public void SetOffset(uint offset)
         {
             _stream.Seek(offset, SeekOrigin.Begin);
         }

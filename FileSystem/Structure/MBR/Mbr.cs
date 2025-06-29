@@ -14,20 +14,22 @@ namespace FileSystem.Structure.MBR
         private int partitionTableSize = 64; // #1 ~ 4 partition table
         private int signatureSize = 2;
 
+        public static int SIGNATURE = 0xAA55;
         private const int partitionSize = 16;
 
-        private DataStream ds;
+        private byte[] data;
         private List<Partition> partitionTableList;
 
-        public Mbr(DataStream ds)
+        public Mbr(byte[] data)
         {
-            this.ds = ds;
+            this.data = data;
             partitionTableList = new List<Partition>();
 
-
             // 파티션 테이블을 읽어온다.
-            byte[] partitionTable = ds.GetBytes(bootCodeSize, partitionTableSize);
+            byte[] partitionTable = Util.CropBytes(data, bootCodeSize, partitionTableSize);
             SetPartitions(partitionTableList, partitionTable);
+
+            Log.Information("MBR 분석 완료");
         }
 
         public List<Partition> GetPartitions()
@@ -48,6 +50,20 @@ namespace FileSystem.Structure.MBR
                 }
             }
             Log.Information("MBR 파티션 총 개수: " + partitionList.Count + "개");
+        }
+
+        public Partition SelectPartition()
+        {
+            Console.WriteLine("\n==========파티션 리스트========== ");
+            for (int i = 0; i < partitionTableList.Count; i++)
+            {
+                Console.WriteLine(" - 파티션 #" + i + " : " + partitionTableList[i].partitionType);
+            }
+            Console.WriteLine("\n분석할 파티션을 선택해 주세요: ");
+            string readValue = Console.ReadLine() ?? "";
+            int partNum = int.Parse(readValue);
+
+            return partitionTableList[partNum];
         }
     }
 }

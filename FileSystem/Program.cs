@@ -15,10 +15,20 @@ namespace FileSystem
 
             Log.Information("프로그램이 시작되었습니다.");
 
-            string filePath = @"C:\\Users\\tjddb\\Downloads\\fat32.vhd";
+            string filePath = @"C:\\Users\\tjddb\\Downloads\\Fat32 Image.vhd";
 
             DataStore dataStore = new DataStore(filePath);
-            dataStore.BuildFileSystem();
+            var fileSystem = dataStore.BuildFileSystem();
+            var node = fileSystem.GetRootNode();
+            node.ShowInfo();
+
+            while (true)
+            {
+
+
+                var input = Console.ReadLine();
+                if (input == "q") break;
+            }
 
             Log.CloseAndFlush();
         }
