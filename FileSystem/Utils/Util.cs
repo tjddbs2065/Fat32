@@ -27,11 +27,57 @@ namespace FileSystem.Utils
                 return BitConverter.ToUInt32(padd, 0);
             }
         }
+
+        public static string ByteToASCII(byte[] bytes)
+        {
+            return Encoding.ASCII.GetString(bytes).Trim((char)0x20).Trim('\0');
+        }
+        public static string ByteToASCII(byte[] bytes, int length)
+        {
+            return Encoding.ASCII.GetString(bytes, 0, length).Trim((char)0x20).Trim('\0');
+        }
+        public static string ByteToASCII(byte[] bytes, int index, int length)
+        {
+            return Encoding.ASCII.GetString(bytes, index, length).Trim((char)0x20).Trim('\0');
+        }
+        public static string ByteToUnicode(byte[] bytes)
+        {
+            return Encoding.Unicode.GetString(bytes).Trim((char)0xFFFF).Trim('\0');
+        }
+        public static string ByteToUnicode(byte[] bytes, int length)
+        {
+            return Encoding.Unicode.GetString(bytes, 0, length).Trim((char)0xFFFF).Trim('\0');
+        }
+        public static string ByteToUnicode(byte[] bytes, int index, int length)
+        {
+            return Encoding.Unicode.GetString(bytes, index, length).Trim((char)0xFFFF).Trim('\0');
+        }
+
         public static byte[] CropBytes(byte[] bytes, int source, int size)
         {
             byte[] tmp = new byte[size];
             Array.Copy(bytes, source, tmp, 0, size);
             return tmp;
+        }
+        public static void PrintBytes(byte[] bytes)
+        {
+            int i = 0;
+            foreach (byte b in bytes)
+            {
+                Console.Write($"{b:X2} ");
+                if(++i == 16)
+                {
+                    Console.WriteLine();
+                    i = 0;
+                }
+            }
+        }
+        public static void WriteFile(string filePath, byte[] data)
+        {
+            using(FileStream fs = new FileStream(filePath, FileMode.Create))
+            {
+                fs.Write(data, 0, data.Length);
+            }
         }
     }
 }

@@ -58,9 +58,9 @@ namespace FileSystem.Structure.MBR
         private void SetBootRecordOffset(byte[] data)
         {
             int lbaAddrOffset = 8;
-            bootRecordOffset = Util.ByteToUInt(Util.CropBytes(data, lbaAddrOffset, startingLBAAddrSize));
+            bootRecordOffset = Util.ByteToUInt(Util.CropBytes(data, lbaAddrOffset, startingLBAAddrSize)) * 512;
 
-            Log.Information("BootRecord 주소: " + bootRecordOffset + " Sectors");
+            Log.Information("BootRecord 주소: 0x" + bootRecordOffset.ToString("X") + "");
         }
 
         private void SetSizeInSector(byte[] data)
