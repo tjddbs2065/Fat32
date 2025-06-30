@@ -1,4 +1,5 @@
 ﻿using FileSystem.FileSystem;
+using FileSystem.Utils;
 using Serilog;
 
 namespace FileSystem
@@ -19,15 +20,22 @@ namespace FileSystem
 
             DataStore dataStore = new DataStore(filePath);
             var fileSystem = dataStore.BuildFileSystem();
+
+            // 최초 루트 노드 출력
             var node = fileSystem.GetRootNode();
             node.ShowInfo();
 
             while (true)
             {
-
-
                 var input = Console.ReadLine();
+
                 if (input == "q") break;
+                if (input == null) continue;
+
+                fileSystem.Export(node.GetClusterNumber(input));
+
+                //node = fileSystem.GetNode(node.GetClusterNumber(input));
+                //node.ShowInfo();
             }
 
             Log.CloseAndFlush();

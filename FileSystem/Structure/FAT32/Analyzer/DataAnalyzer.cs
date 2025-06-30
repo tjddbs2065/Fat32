@@ -61,5 +61,14 @@ namespace FileSystem.Structure.FAT32.Analyzer
 
             return new FileNode(dirList);
         }
+        public void Export(uint clusterNum)
+        {
+            // FatArea에서 클러스터 체인 정보 획득
+            Queue<uint> clusterChain = fatEntry.GetClusterChain(clusterNum);
+            // 클러스터 체인 정보 기반으로 byte 데이터 가져오기
+            byte[] dataBytes = dataEntry.GetDataBlock(clusterChain);
+
+            Util.WriteFile(@"C:\\Users\\tjddb\\Downloads\\tmp.txt", dataBytes);
+        }
     }
 }

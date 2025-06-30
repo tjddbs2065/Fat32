@@ -39,6 +39,5 @@ namespace FileSystem.Utils
         {
             _stream.Seek(offset, SeekOrigin.Begin);
         }
-
     }
 }

@@ -21,10 +21,20 @@ namespace FileSystem.Structure.FAT32.Analyzer
         private string LastModifiedDate;
         public uint FileSize { get; private set; }
         public uint ClusterNum { get; private set; }
+        public bool isDeleted { get; private set; }
 
 
         public DirEntry(Stack<byte[]> stack) {
             Name = new StringBuilder();
+            Extension = "";
+            Attribute = 0;
+            ClusterNum = 0;
+            FileSize = 0;
+            CreateTime = "";
+            CreateDate = "";
+            LastAccessDate = "";
+            LastModifiedDate = "";
+
             InitDir(stack);
         }
 
@@ -58,6 +68,7 @@ namespace FileSystem.Structure.FAT32.Analyzer
 
         private void SetProperties(byte[] data)
         {
+            isDeleted = (data[0] == 0xE5) ? true : false;
             Extension = Util.ByteToASCII(Util.CropBytes(data, 8, 3));
             Attribute = Util.ByteToUInt(Util.CropBytes(data, 11, 1));
 
