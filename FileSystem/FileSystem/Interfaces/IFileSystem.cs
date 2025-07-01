@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileSystem.FileSystem
+namespace FileSystem.FileSystem.Interfaces
 {
     internal interface IFileSystem
     {
-        public DataAnalyzer BuildFileSystem();
+        public FatAnalyzer BuildFileSystem();
     }
 }

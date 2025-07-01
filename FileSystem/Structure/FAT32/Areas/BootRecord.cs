@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileSystem.Structure.FAT32
+namespace FileSystem.Structure.FAT32.Areas
 {
     internal class BootRecord
     {

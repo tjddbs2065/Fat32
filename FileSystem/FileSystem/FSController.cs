@@ -1,4 +1,5 @@
-﻿using FileSystem.Structure.FAT32.Analyzer;
+﻿using FileSystem.FileSystem.Interfaces;
+using FileSystem.Structure.FAT32.Analyzer;
 using FileSystem.Structure.MBR;
 using FileSystem.Utils;
 using Serilog;
@@ -11,30 +12,37 @@ using System.Threading.Tasks;
 
 namespace FileSystem.FileSystem
 {
-    internal class DataStore
+    internal class FSController
     {
         string path;
-        DataStream ds;
+        private DataStream ds;
+        private List<ISystemDetector> detectors;
 
-        public DataStore(string path)
+        public FSController(string path)
         {
             this.path = path;
             ds = new DataStream(path);
+
+            detectors = new List<ISystemDetector>
+            {
+                new Fat32Detector(),
+            };
         }
 
-        public DataAnalyzer BuildFileSystem()
+        public IAnalyzer BuildFileSystem()
         {
-            IFileSystem fs;
             uint offset = InitBootOffset();
 
-            byte[] firstSector = ds.GetBytes(offset, 512); // 첫 섹터 읽어오기
+            byte[] firstSector = ds.GetBytes(offset, Util.SECTOR); // 첫 섹터 읽어오기
 
-            //if (isFat32(firstSector))
-            //{
-            //    fs = new Fat32(ds, offset);
-            //}
-            fs = new Fat32(ds, offset);
-            return fs.BuildFileSystem();
+            foreach (ISystemDetector detector in detectors)
+            {
+                if (detector.IsMatch(firstSector))
+                {
+                    return detector.Create(ds, offset).BuildFileSystem();
+                }
+            }
+            throw new Exception("알 수 없는 파일시스템 입니다.");
         }
 
         private bool isMbr(byte[] data)
@@ -72,20 +80,5 @@ namespace FileSystem.FileSystem
             return bootRecordOffset;
         }
 
-        private bool isFat32(byte[] data)
-        {
-            byte[] signatureBytes = Util.CropBytes(data, 510, 2);
-
-            if (Util.ByteToUInt(signatureBytes) != Mbr.SIGNATURE)
-                return false;
-
-            string fsType = Util.ByteToASCII(data, 82, 8).Trim();
-            if(fsType == "FAT32")
-            {
-                Log.Information("FAT32 파일 시스템 감지됨");
-                return true;
-            }
-            return false;
-        }
     }
 }

@@ -18,7 +18,7 @@ namespace FileSystem
 
             string filePath = @"C:\\Users\\tjddb\\Downloads\\Fat32 Image.vhd";
 
-            DataStore dataStore = new DataStore(filePath);
+            FSController dataStore = new FSController(filePath);
             var fileSystem = dataStore.BuildFileSystem();
 
             // 최초 루트 노드 출력
@@ -32,10 +32,10 @@ namespace FileSystem
                 if (input == "q") break;
                 if (input == null) continue;
 
-                fileSystem.Export(node.GetClusterNumber(input));
+                //fileSystem.Export(node.GetClusterNumber(input));
 
-                //node = fileSystem.GetNode(node.GetClusterNumber(input));
-                //node.ShowInfo();
+                node = fileSystem.GetNode(node.GetClusterNumber(input));
+                node.ShowInfo();
             }
 
             Log.CloseAndFlush();

@@ -1,4 +1,4 @@
-﻿using FileSystem.Structure.FAT32.Analyzer;
+﻿using FileSystem.Structure.FAT32.Areas;
 using System;
 using System.Collections.Generic;
 using System.Linq;

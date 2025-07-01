@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileSystem.Structure.FAT32.Analyzer
+namespace FileSystem.Structure.FAT32.Areas
 {
     internal class DirEntry
     {
@@ -24,7 +24,8 @@ namespace FileSystem.Structure.FAT32.Analyzer
         public bool isDeleted { get; private set; }
 
 
-        public DirEntry(Stack<byte[]> stack) {
+        public DirEntry(Stack<byte[]> stack)
+        {
             Name = new StringBuilder();
             Extension = "";
             Attribute = 0;
@@ -49,7 +50,7 @@ namespace FileSystem.Structure.FAT32.Analyzer
             else
             {
                 int cnt = stack.Count;
-                for(int i = 0; i < cnt; i++)
+                for (int i = 0; i < cnt; i++)
                 {
                     byte[] data = stack.Pop();
                     if (data[11] == 0x0F)
@@ -68,7 +69,7 @@ namespace FileSystem.Structure.FAT32.Analyzer
 
         private void SetProperties(byte[] data)
         {
-            isDeleted = (data[0] == 0xE5) ? true : false;
+            isDeleted = data[0] == 0xE5 ? true : false;
             Extension = Util.ByteToASCII(Util.CropBytes(data, 8, 3));
             Attribute = Util.ByteToUInt(Util.CropBytes(data, 11, 1));
 

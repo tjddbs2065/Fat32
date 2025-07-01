@@ -1,6 +1,7 @@
-﻿using FileSystem.Structure;
-using FileSystem.Structure.FAT32;
+﻿using FileSystem.FileSystem.Interfaces;
+using FileSystem.Structure;
 using FileSystem.Structure.FAT32.Analyzer;
+using FileSystem.Structure.FAT32.Areas;
 using FileSystem.Utils;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace FileSystem.FileSystem
 
         private FatContext fc;
 
-        private DataAnalyzer da;
+        private FatAnalyzer da;
 
         public Fat32(DataStream ds, uint bootRecordOffset)
         {
@@ -26,39 +27,14 @@ namespace FileSystem.FileSystem
             this.bootRecordOffset = bootRecordOffset;
         }
 
-        public DataAnalyzer BuildFileSystem()
+        public FatAnalyzer BuildFileSystem()
         {
             byte[] firstSector = ds.GetBytes(bootRecordOffset, Util.SECTOR);
             br = new BootRecord(firstSector);
             fc = new FatContext(br, ds, bootRecordOffset);
 
-            da = new DataAnalyzer(fc);
+            da = new FatAnalyzer(fc);
             return da;
-        }
-
-        public void Create()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Read()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Restore()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update()
-        {
-            throw new NotImplementedException();
         }
     }
 }

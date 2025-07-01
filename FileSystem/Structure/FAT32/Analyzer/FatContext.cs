@@ -1,11 +1,12 @@
-﻿using FileSystem.Utils;
+﻿using FileSystem.Structure.FAT32.Areas;
+using FileSystem.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileSystem.Structure.FAT32
+namespace FileSystem.Structure.FAT32.Analyzer
 {
     internal class FatContext
     {
@@ -23,7 +24,7 @@ namespace FileSystem.Structure.FAT32
             this.ds = ds;
             ClusterSize = br.bytesPerSector * br.sectorPerCluster;
             FatOffset = br.reservedSectorCount * br.bytesPerSector + bootRecordOffset;
-            FatAreaSize = br.numOfFAT * (br.FATSize32 * br.bytesPerSector);
+            FatAreaSize = br.numOfFAT * br.FATSize32 * br.bytesPerSector;
             DataOffset = FatOffset + FatAreaSize;
             RootDirCluster = br.rootDirectoryCluster;
         }

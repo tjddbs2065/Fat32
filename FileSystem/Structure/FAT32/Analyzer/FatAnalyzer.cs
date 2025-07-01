@@ -1,4 +1,6 @@
-﻿using FileSystem.Utils;
+﻿using FileSystem.FileSystem.Interfaces;
+using FileSystem.Structure.FAT32.Areas;
+using FileSystem.Utils;
 using System;
 using System.Collections.Generic;
 using System.Formats.Tar;
@@ -8,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace FileSystem.Structure.FAT32.Analyzer
 {
-    internal class DataAnalyzer
+    internal class FatAnalyzer : IAnalyzer
     {
         private FatArea fatEntry;
         private DataArea dataEntry;
         private FatContext fatContext;
 
-        public DataAnalyzer(FatContext fatContext)
+        public FatAnalyzer(FatContext fatContext)
         {
             this.fatContext = fatContext;
 

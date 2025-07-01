@@ -1,11 +1,12 @@
-﻿using FileSystem.Utils;
+﻿using FileSystem.Structure.FAT32.Analyzer;
+using FileSystem.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileSystem.Structure.FAT32.Analyzer
+namespace FileSystem.Structure.FAT32.Areas
 {
     internal class DataArea
     {
